@@ -15,16 +15,18 @@ public class Mine : MonoBehaviour
         if(other.GetComponent<UserInput>() != null)
         {
             _timeToExplosion -= Time.deltaTime;
-            Debug.Log(_timeToExplosion);
+
             if ( _timeToExplosion <= 0)
             {
                 Collider[] targets = Physics.OverlapSphere(transform.position, _rangeToExplosion);
 
                 foreach(Collider target in targets)
                 {
-                    if (target.GetComponent<PlayerHealth>() != null)
+                    PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+
+                    if (playerHealth != null)
                     {
-                        target.GetComponent<PlayerHealth>().TakeDamage(_damage);
+                        playerHealth.TakeDamage(_damage);
                         _viev.SpawnExplosion(this.transform);
                         Destroy(gameObject);
                     }

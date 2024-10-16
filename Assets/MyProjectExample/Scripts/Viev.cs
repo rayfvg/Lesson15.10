@@ -26,7 +26,6 @@ public class Viev : MonoBehaviour
     {
         if(_playerHealth.GetHealth <= _playerHealth.GetMaxHealth * _multiplay)
         {
-            Debug.Log("sdf");
             _animator.SetLayerWeight(_layerIndex, 1);
         }
     }
