@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Viev : MonoBehaviour
+public class PlayerView : MonoBehaviour
 {
     private readonly int IsRunningKey = Animator.StringToHash("IsRunning");
     private readonly int IsDieKey = Animator.StringToHash("Die");
@@ -10,7 +10,7 @@ public class Viev : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private TMP_Text _healthText;
 
-    [SerializeField] private PlayerHealth _playerHealth;
+    [SerializeField] private Character _player;
 
     [SerializeField] private ParticleSystem _explosionParticle;
 
@@ -19,12 +19,12 @@ public class Viev : MonoBehaviour
 
     private void Start()
     {
-        UpdateText(_playerHealth.GetMaxHealth);
+        UpdateText(_player.Health.GetHealth);
     }
 
     private void Update()
     {
-        if(_playerHealth.GetHealth <= _playerHealth.GetMaxHealth * _multiplay)
+        if(_player.Health.GetCurrentHealth <= _player.Health.GetHealth * _multiplay)
         {
             _animator.SetLayerWeight(_layerIndex, 1);
         }

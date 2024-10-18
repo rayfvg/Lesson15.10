@@ -8,7 +8,7 @@ public class Mine : MonoBehaviour
 
     [SerializeField] private int _damage;
 
-    [SerializeField] private Viev _viev;
+    [SerializeField] private PlayerView _view;
 
     private void OnTriggerStay(Collider other)
     {
@@ -22,18 +22,19 @@ public class Mine : MonoBehaviour
 
                 foreach(Collider target in targets)
                 {
-                    PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+                    Character player = target.GetComponent<Character>();
 
-                    if (playerHealth != null)
+                    if (player != null)
                     {
-                        playerHealth.TakeDamage(_damage);
-                        _viev.SpawnExplosion(this.transform);
+                        player.Health.TakeDamage(_damage);
+                        _view.SpawnExplosion(this.transform);
                         Destroy(gameObject);
                     }
                 }
             }
         }
     }
+
 
     private void OnDrawGizmos()
     {

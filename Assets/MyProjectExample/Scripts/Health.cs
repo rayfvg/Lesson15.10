@@ -1,17 +1,18 @@
-using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class Health
 {
-    [SerializeField] private Viev _playerViev;
-    [SerializeField] private int _maxHealth;
+    private PlayerView _playerViev;
+    private int _maxHealth;
 
     private int _currentHealth;
 
-    public int GetMaxHealth => _maxHealth;
-    public int GetHealth => _currentHealth;
+    public int GetHealth => _maxHealth;
+    public int GetCurrentHealth => _currentHealth;
 
-    private void Start()
+    public Health(PlayerView playerViev, int maxHealth)
     {
+        _playerViev = playerViev;
+        _maxHealth = maxHealth;
         _currentHealth = _maxHealth;
     }
 

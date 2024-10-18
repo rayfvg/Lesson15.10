@@ -6,17 +6,19 @@ public class Movement
     private NavMeshAgent _agent;
     private GameObject _cursorPrefab;
     private Transform _transform;
+    private PlayerView _playerViev;
 
     private RaycastHit _hitInfo;
     private GameObject _flag;
 
     private bool _isWalking = false;
 
-    public Movement(NavMeshAgent agent, GameObject cursorPrefab, Transform transform)
+    public Movement(NavMeshAgent agent, GameObject cursorPrefab, Transform transform, PlayerView playerViev)
     {
         _agent = agent;
         _cursorPrefab = cursorPrefab;
         _transform = transform;
+        _playerViev = playerViev;
     }
 
     public void Walk()
@@ -27,7 +29,7 @@ public class Movement
         {
             NavMeshPath pathToTarget = new NavMeshPath();
 
-            if (GetPath(pathToTarget))
+            if (CalculatePath.GetPath(_agent, _hitInfo.point, pathToTarget))
             {
                 _agent.SetDestination(_hitInfo.point);
 
@@ -36,6 +38,7 @@ public class Movement
 
                 _flag = Object.Instantiate(_cursorPrefab, _hitInfo.point, Quaternion.identity);
             }
+            
         }
     }
 
@@ -49,6 +52,7 @@ public class Movement
 
             _agent.isStopped = true;
             Debug.Log("I stay");
+            _playerViev.StopRunning();
 
             _isWalking = false;
             return false;
@@ -59,20 +63,10 @@ public class Movement
             {
                 _agent.isStopped = false;
                 _isWalking = true;
+                _playerViev.StartRunning();
             }
 
             return true;
         }
-    }
-
-    public bool GetPath(NavMeshPath pathToTarget)
-    {
-        pathToTarget.ClearCorners();
-
-        if (_agent.CalculatePath(_hitInfo.point, pathToTarget) && pathToTarget.status != NavMeshPathStatus.PathInvalid)
-            return true;
-
-        Debug.Log("I can't get in there.");
-        return false;
     }
 }

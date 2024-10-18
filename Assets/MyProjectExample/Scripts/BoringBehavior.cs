@@ -1,38 +1,28 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BoringBehavior : MonoBehaviour
+public class BoringBehavior
 {
-    private const int LeftMouseButton = 0;
+    private float _timeToStartIdle;
 
-    [SerializeField] private float _timeToStartIdle;
+    private int _timeToChanchePoint;
+    private float _radiusPositions;
 
-    [SerializeField] private int _timeToChanchePoint;
-    [SerializeField] private float _radiusPositions;
-
-    [SerializeField] private NavMeshAgent _navMeshAgent;
-    [SerializeField] private NavMeshAgent _agent;
+    private NavMeshAgent _agent;
 
     private Vector3 _randomDirection;
     private Movement _movement;
+    private Transform _transform;
 
     private float _timeChangePoint;
     private float _timeForStartIdle;
 
-
-    private void Update()
+    public BoringBehavior(Transform transform, int timeToChanchePoint, float radiusPositions, NavMeshAgent agent)
     {
-        _timeForStartIdle += Time.deltaTime;
-
-        if (_timeForStartIdle >= _timeToStartIdle)
-        {
-            Idle();  
-        }
-
-        if (Input.GetMouseButtonDown(LeftMouseButton))
-        {
-            _timeForStartIdle = 0;
-        }
+        _timeToChanchePoint = timeToChanchePoint;
+        _radiusPositions = radiusPositions;
+        _agent = agent;
+        _transform = transform;
     }
 
     public void Idle()
@@ -48,22 +38,11 @@ public class BoringBehavior : MonoBehaviour
             do
             {
                 _randomDirection = Random.insideUnitSphere * _radiusPositions;
-                _randomDirection += transform.position;
+                _randomDirection += _transform.position;
             }
-            while (GetPath(pathToTarget) == false);
+            while (CalculatePath.GetPath(_agent, _randomDirection, pathToTarget) == false);
 
             _agent.SetDestination(_randomDirection);
         }
-    }
-
-    public bool GetPath(NavMeshPath pathToTarget)
-    {
-        pathToTarget.ClearCorners();
-
-        if (_agent.CalculatePath(_randomDirection, pathToTarget) && pathToTarget.status != NavMeshPathStatus.PathInvalid)
-            return true;
-
-        Debug.Log("Invalid dot");
-        return false;
     }
 }
