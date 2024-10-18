@@ -2,6 +2,7 @@
 public class Health
 {
     private PlayerView _playerViev;
+    private TextView _textView;
     private int _maxHealth;
 
     private int _currentHealth;
@@ -9,9 +10,10 @@ public class Health
     public int GetHealth => _maxHealth;
     public int GetCurrentHealth => _currentHealth;
 
-    public Health(PlayerView playerViev, int maxHealth)
+    public Health(PlayerView playerViev, TextView textView, int maxHealth)
     {
         _playerViev = playerViev;
+        _textView = textView;
         _maxHealth = maxHealth;
         _currentHealth = _maxHealth;
     }
@@ -22,7 +24,7 @@ public class Health
             return;
 
         _currentHealth -= damage;
-        _playerViev.UpdateText(_currentHealth);
+        _textView.UpdateText(_currentHealth);
         _playerViev.TakeDamageAnimation();
 
         if (_currentHealth < 0)

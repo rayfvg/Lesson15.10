@@ -4,6 +4,7 @@ using UnityEngine.AI;
 public class Character : MonoBehaviour
 {
     [SerializeField] private PlayerView _playerViev;
+    [SerializeField] private TextView _textView;
 
     [SerializeField] private int _maxHealth;
 
@@ -17,27 +18,26 @@ public class Character : MonoBehaviour
 
     [SerializeField] private UserInput _userInput;
 
+    public float Timer;
+
     public Health Health { get; private set; }
     public Movement Movement { get; private set; }
     public BoringBehavior BoringBehavior { get; private set; }
 
     private void Update()
     {
-        float time = 0;
-        time += Time.deltaTime;
+        Timer += Time.deltaTime;
 
-        if (_timeToStartIdle > time)
+        if (_timeToStartIdle < Timer)
         {
-            if (_userInput.StopIdleBehavior())
-                return;
-
             BoringBehavior.Idle();
+            _userInput.StopIdleBehavior(); 
         }
     }
 
     public void Initialization()
     {
-        Health = new Health(_playerViev, _maxHealth);
+        Health = new Health(_playerViev, _textView, _maxHealth);
         Movement = new Movement(_agent, _flagPrefab, transform, _playerViev);
         BoringBehavior = new BoringBehavior(transform, _timeToChanchePoint, _radiusPositions, _agent);
     }

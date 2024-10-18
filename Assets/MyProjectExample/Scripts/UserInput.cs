@@ -22,5 +22,11 @@ public class UserInput : MonoBehaviour
 
     public bool StartGame() => Input.GetKeyDown(KeyCode.Space);
 
-    public bool StopIdleBehavior() => Input.GetMouseButtonDown(LeftMouseButton);
+    public void StopIdleBehavior()
+    {
+        if (Input.GetMouseButtonDown(LeftMouseButton))
+        {
+            _player.Timer = 0;
+        }
+    } 
 }

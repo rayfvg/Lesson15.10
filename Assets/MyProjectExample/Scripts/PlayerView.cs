@@ -8,7 +8,7 @@ public class PlayerView : MonoBehaviour
     private readonly int IsTakeDamageKey = Animator.StringToHash("TakeDamage");
 
     [SerializeField] private Animator _animator;
-    [SerializeField] private TMP_Text _healthText;
+
 
     [SerializeField] private Character _player;
 
@@ -16,11 +16,6 @@ public class PlayerView : MonoBehaviour
 
     private int _layerIndex = 1;
     private float _multiplay = 0.3f;
-
-    private void Start()
-    {
-        UpdateText(_player.Health.GetHealth);
-    }
 
     private void Update()
     {
@@ -33,8 +28,6 @@ public class PlayerView : MonoBehaviour
     public void StartRunning() => _animator.SetBool(IsRunningKey, true);
 
     public void StopRunning() => _animator.SetBool(IsRunningKey, false);
-
-    public void UpdateText(int value) => _healthText.text = value.ToString();
 
     public void SpawnExplosion(Transform transform)
     {
