@@ -1,28 +1,35 @@
-using Cinemachine;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class StartGame : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera _camera;
-
     [SerializeField] private UserInput _userInput;
-    [SerializeField] private Character _character;
 
-    [SerializeField] private GameObject _menu;
+    [SerializeField] private TextView _textView;
+
+    [SerializeField] private int _maxHealth;
+
+    [SerializeField] private GameObject _flagPrefab;
+
+    [SerializeField] private float _timeToStartIdle;
+    [SerializeField] private int _timeToChanchePoint;
+    [SerializeField] private float _radiusPositions;
+
+    [SerializeField] private NavMeshAgent _agent;
+
+    [SerializeField] private Character _playerPrefab;
+    [SerializeField] private Transform _spawnPoint;
+
+    private Character _player;
 
     private void Awake()
     {
-        _character.Initialization();
-        _userInput.enabled = false;
+        SpawnPlayer();
     }
 
-    private void Update()
+    public void SpawnPlayer()
     {
-        if (_userInput.StartGame())
-        {
-            _userInput.enabled = true;
-            _camera.enabled = false;
-            _menu.gameObject.SetActive(false);
-        }
+        _player = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
+        _player.Initialization(_textView, _maxHealth, _agent, _flagPrefab, _timeToChanchePoint, _radiusPositions);
     }
 }

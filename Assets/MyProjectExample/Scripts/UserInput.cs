@@ -5,8 +5,13 @@ public class UserInput : MonoBehaviour
 {
     private const int LeftMouseButton = 0;
 
-    [SerializeField] private Character _player;
-  
+private Character _player;
+
+    private void Awake()
+    {
+        _player = GetComponent<Character>();
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(LeftMouseButton))
@@ -21,12 +26,4 @@ public class UserInput : MonoBehaviour
     }
 
     public bool StartGame() => Input.GetKeyDown(KeyCode.Space);
-
-    public void StopIdleBehavior()
-    {
-        if (Input.GetMouseButtonDown(LeftMouseButton))
-        {
-            _player.Timer = 0;
-        }
-    } 
 }

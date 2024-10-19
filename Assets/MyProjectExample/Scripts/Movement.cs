@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Movement
+public class Movement 
 {
     private NavMeshAgent _agent;
     private GameObject _cursorPrefab;
