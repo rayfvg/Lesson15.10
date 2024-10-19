@@ -4041,9 +4041,10 @@ MonoBehaviour:
   _timeToStartIdle: 5
   _timeToChanchePoint: 2
   _radiusPositions: 3
-  _agent: {fileID: 8673108434285795476, guid: 59112d854ea24f24c930036bb71bb598, type: 3}
+  _agent: {fileID: 0}
   _playerPrefab: {fileID: -8752580060885062855, guid: 59112d854ea24f24c930036bb71bb598, type: 3}
   _spawnPoint: {fileID: 1864508974}
+  _player: {fileID: -8752580060885062855, guid: 59112d854ea24f24c930036bb71bb598, type: 3}
 --- !u!4 &147265145
 Transform:
   m_ObjectHideFlags: 0

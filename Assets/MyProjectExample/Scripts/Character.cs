@@ -26,17 +26,18 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        _playerView = GetComponentInChildren<PlayerView>();
+        
     }
 
     private void Start()
     {
-        _textView.UpdateText(_maxHealth);
+    
     }
 
     public void Initialization(TextView textView, int maxHealth, NavMeshAgent agent,
         GameObject flagPrefab, int timeToChanchePoint, float radiusPositions)
     {
+        _playerView = GetComponentInChildren<PlayerView>();
 
         _textView = textView;
         _maxHealth = maxHealth;
@@ -48,5 +49,7 @@ public class Character : MonoBehaviour
         Health = new Health(_playerView, _textView, _maxHealth);
         Movement = new Movement(_agent, _flagPrefab, transform, _playerView);
         BoringBehavior = new BoringBehavior(transform, _timeToChanchePoint, _radiusPositions, _agent);
+
+        _textView.UpdateText(_maxHealth);
     }
 }

@@ -20,7 +20,7 @@ public class StartGame : MonoBehaviour
     [SerializeField] private Character _playerPrefab;
     [SerializeField] private Transform _spawnPoint;
 
-    private Character _player;
+    [SerializeField]  private Character _player;
 
     private void Awake()
     {
@@ -29,7 +29,8 @@ public class StartGame : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        _player = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
+        _player = Instantiate(_playerPrefab);
+        _player.transform.position = _spawnPoint.position;
         _player.Initialization(_textView, _maxHealth, _agent, _flagPrefab, _timeToChanchePoint, _radiusPositions);
     }
 }
