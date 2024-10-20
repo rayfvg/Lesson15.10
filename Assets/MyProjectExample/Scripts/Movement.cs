@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Movement 
+public class Movement : IBehaviour
 {
     private NavMeshAgent _agent;
     private GameObject _cursorPrefab;
@@ -43,19 +43,19 @@ public class Movement
     }
 
 
-    public bool UpdateWalkToFlag()
+    public void Update()
     {
         if (_agent.remainingDistance <= _agent.stoppingDistance && !_agent.pathPending)
         {
             if (!_isWalking)
-                return false;
+               // return false;
 
             _agent.isStopped = true;
             Debug.Log("I stay");
             _playerViev.StopRunning();
 
             _isWalking = false;
-            return false;
+           // return false;
         }
         else
         {
@@ -66,7 +66,7 @@ public class Movement
                 _playerViev.StartRunning();
             }
 
-            return true;
+           // return true;
         }
     }
 }

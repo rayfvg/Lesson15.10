@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BoringBehavior
+public class BoringBehavior : IBehaviour
 {
-    private float _timeToStartIdle;
-
     private int _timeToChanchePoint;
     private float _radiusPositions;
 
@@ -25,7 +23,7 @@ public class BoringBehavior
         _transform = transform;
     }
 
-    public void Idle()
+    public void Update()
     {
         _timeChangePoint += Time.deltaTime;
 

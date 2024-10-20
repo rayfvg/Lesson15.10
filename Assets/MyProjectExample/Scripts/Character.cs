@@ -1,55 +1,48 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Character : MonoBehaviour
 {
-    private PlayerView _playerView;
-    private TextView _textView;
+    private IBehaviour _basicbehavior;
+    private IBehaviour _idlebehavior;
 
-    private int _maxHealth;
+    private IBehaviour _currentBehavior;
 
-    private GameObject _flagPrefab;
+    private float _timeToStartIdleBehavior = 3;
 
-    private float _timeToStartIdle;
-    private int _timeToChanchePoint;
-    private float _radiusPositions;
+    private UserInput _userInput;
 
-    private NavMeshAgent _agent;
-
-    private IBehaviour _iBehaviourIdle;
-    private IBehaviour _iBehaviourWalk;
+    public float Timer = 0;
 
     public Health Health { get; private set; }
     public Movement Movement { get; private set; }
     public BoringBehavior BoringBehavior { get; private set; }
 
-
-    private void Awake()
-    {
-        
-    }
-
     private void Start()
     {
-    
+        _userInput = FindObjectOfType<UserInput>();
+
+        _idlebehavior = BoringBehavior;
+        _basicbehavior = Movement;
+
+        _currentBehavior = _basicbehavior;
     }
 
-    public void Initialization(TextView textView, int maxHealth, NavMeshAgent agent,
-        GameObject flagPrefab, int timeToChanchePoint, float radiusPositions)
+    private void Update()
     {
-        _playerView = GetComponentInChildren<PlayerView>();
+        Timer += Time.deltaTime;
 
-        _textView = textView;
-        _maxHealth = maxHealth;
-        _agent = agent;
-        _flagPrefab = flagPrefab;
-        _timeToChanchePoint = timeToChanchePoint;
-        _radiusPositions = radiusPositions;
+        if (_timeToStartIdleBehavior < Timer)
+        {
+            _currentBehavior = _idlebehavior;
+            _idlebehavior.Update();
+            _userInput.StopIdle();
+        }  
+    }
 
-        Health = new Health(_playerView, _textView, _maxHealth);
-        Movement = new Movement(_agent, _flagPrefab, transform, _playerView);
-        BoringBehavior = new BoringBehavior(transform, _timeToChanchePoint, _radiusPositions, _agent);
-
-        _textView.UpdateText(_maxHealth);
+    public void Initialize(Health health, Movement movemen, BoringBehavior boringBehavior)
+    {
+        Health = health;
+        Movement = movemen;
+        BoringBehavior = boringBehavior;
     }
 }

@@ -24,7 +24,6 @@ public class Health
             return;
 
         _currentHealth -= damage;
-        _textView.UpdateText(_currentHealth);
         _playerViev.TakeDamageAnimation();
 
         if (_currentHealth < 0)
@@ -32,5 +31,6 @@ public class Health
             _currentHealth = 0;
             _playerViev.DieAnimation();
         }
+        _textView.UpdateText(_currentHealth);
     }
 }

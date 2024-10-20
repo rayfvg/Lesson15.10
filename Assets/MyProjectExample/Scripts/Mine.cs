@@ -8,7 +8,7 @@ public class Mine : MonoBehaviour
 
     [SerializeField] private int _damage;
 
-    [SerializeField] private PlayerView _view;
+    private PlayerView _view;
 
     private void OnTriggerStay(Collider other)
     {
@@ -27,6 +27,7 @@ public class Mine : MonoBehaviour
                     if (player != null)
                     {
                         player.Health.TakeDamage(_damage);
+                        _view = FindObjectOfType<PlayerView>();
                         _view.SpawnExplosion(this.transform);
                         Destroy(gameObject);
                     }
@@ -34,6 +35,7 @@ public class Mine : MonoBehaviour
             }
         }
     }
+
 
 
     private void OnDrawGizmos()
