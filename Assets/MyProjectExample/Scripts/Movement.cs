@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Movement : IBehaviour
 {
+    public bool IsJumping;
     private NavMeshAgent _agent;
     private GameObject _cursorPrefab;
     private Transform _transform;
@@ -13,12 +15,24 @@ public class Movement : IBehaviour
 
     private bool _isWalking = false;
 
-    public Movement(NavMeshAgent agent, GameObject cursorPrefab, Transform transform, PlayerView playerViev)
+    private Coroutine _jumpCorotine;
+    private AnimationCurve _jumpCurve;
+    private MonoBehaviour _context;
+    private float _jumpDuration;
+
+    private AudioManager _audioExample;
+
+    public Movement(NavMeshAgent agent, GameObject cursorPrefab, Transform transform, PlayerView playerViev,
+        AnimationCurve jumpCurve, MonoBehaviour context, float jumpDuration, AudioManager audioExample)
     {
         _agent = agent;
         _cursorPrefab = cursorPrefab;
         _transform = transform;
         _playerViev = playerViev;
+        _jumpCurve = jumpCurve;
+        _context = context;
+        _jumpDuration = jumpDuration;
+        _audioExample = audioExample;
     }
 
     public void Walk()
@@ -45,17 +59,21 @@ public class Movement : IBehaviour
 
     public void Update()
     {
+        if (_agent.isOnOffMeshLink)
+        {
+            if(_jumpCorotine == null)
+            {
+                _context.StartCoroutine(Jump(_jumpDuration));
+            }
+        }
+
         if (_agent.remainingDistance <= _agent.stoppingDistance && !_agent.pathPending)
         {
-            if (!_isWalking)
-               // return false;
-
             _agent.isStopped = true;
             Debug.Log("I stay");
             _playerViev.StopRunning();
 
             _isWalking = false;
-           // return false;
         }
         else
         {
@@ -65,8 +83,33 @@ public class Movement : IBehaviour
                 _isWalking = true;
                 _playerViev.StartRunning();
             }
-
-           // return true;
         }
+    }
+
+    private IEnumerator Jump(float duration)
+    {
+        _playerViev.StartJumping();
+        _audioExample.JumpSound();
+        IsJumping = true;
+        OffMeshLinkData data = _agent.currentOffMeshLinkData;
+        Vector3 startPos = _agent.transform.position;
+        Vector3 endPos = data.endPos + Vector3.up * _agent.baseOffset;
+
+        float progress = 0;
+
+        while (progress < duration)
+        {
+            float yOffset = _jumpCurve.Evaluate(progress / duration);
+            _agent.transform.position = Vector3.Lerp(startPos, endPos, progress / duration) + yOffset * Vector3.up;
+            _transform.rotation = Quaternion.LookRotation(endPos - startPos);
+            progress += Time.deltaTime;
+            yield return null;
+        }
+
+        _agent.transform.position = endPos;
+        _agent.CompleteOffMeshLink();
+        _jumpCorotine = null;
+        IsJumping = false;
+        _playerViev.StopJumping();
     }
 }

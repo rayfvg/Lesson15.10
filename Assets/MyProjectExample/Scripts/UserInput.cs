@@ -14,12 +14,15 @@ public class UserInput : MonoBehaviour
 
     private void Update()
     {
+        if (_player.Movement.IsJumping == true)
+            return;
+
+        _player.Movement.Update();
+
         if (Input.GetMouseButtonDown(LeftMouseButton))
         {
             _player.Movement.Walk();
         }
-
-        _player.Movement.Update();
 
         if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(0);

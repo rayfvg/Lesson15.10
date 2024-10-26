@@ -6,9 +6,9 @@ public class PlayerView : MonoBehaviour
     private readonly int IsRunningKey = Animator.StringToHash("IsRunning");
     private readonly int IsDieKey = Animator.StringToHash("Die");
     private readonly int IsTakeDamageKey = Animator.StringToHash("TakeDamage");
+    private readonly int IsJumpKey = Animator.StringToHash("Jump");
 
     [SerializeField] private Animator _animator;
-
 
     [SerializeField] private Character _player;
 
@@ -28,6 +28,8 @@ public class PlayerView : MonoBehaviour
     public void StartRunning() => _animator.SetBool(IsRunningKey, true);
 
     public void StopRunning() => _animator.SetBool(IsRunningKey, false);
+    public void StartJumping() => _animator.SetBool(IsJumpKey, true);
+    public void StopJumping() => _animator.SetBool(IsJumpKey, false);
 
     public void SpawnExplosion(Transform transform)
     {
